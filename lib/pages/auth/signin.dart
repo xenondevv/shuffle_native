@@ -24,7 +24,7 @@ class _SignInPageState extends State<SignInPage> {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
     serverClientId:
-        "431947796542-v5n1pf7srtpfifdqsvf8jvjia32c3ejg.apps.googleusercontent.com",
+        "54371413496-g25uv3joic8dp85fs3bhp36efmplb951.apps.googleusercontent.com",
   );
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -166,18 +166,44 @@ class _SignInPageState extends State<SignInPage> {
         );
       }
     } catch (error) {
+      debugPrint('Google Sign-In error: $error');
       if (mounted && context.mounted) {
         setState(() {
           isLoading = false;
         });
+
+        String errorMessage = 'Please try again later.';
+        String errorTitle = 'Google Sign-In Failed';
+
+        if (error is Exception) {
+          if (error.toString().contains('PlatformException')) {
+            if (error.toString().contains('10:')) {
+              errorMessage = 'Developer configuration error. Please make sure:\n\n'
+                  '1. SHA-1 fingerprint is added to Firebase Console\n'
+                  '2. Google Sign-In is enabled in Google Cloud Console\n'
+                  '3. Package name matches Firebase configuration';
+              errorTitle = 'Configuration Error';
+            } else if (error.toString().contains('12501')) {
+              errorMessage = 'Sign-in was cancelled by user';
+              errorTitle = 'Sign-In Cancelled';
+            } else if (error.toString().contains('network_error')) {
+              errorMessage = 'Please check your internet connection and try again';
+              errorTitle = 'Network Error';
+            } else if (error.toString().contains('sign_in_failed')) {
+              errorMessage = 'Sign-in failed. Please verify your Google Account is working properly';
+              errorTitle = 'Authentication Error';
+            }
+          }
+        }
+
         showDialog(
           context: context,
           builder:
               (context) => CustomAlertDialog(
                 icon: Icons.error,
                 iconColor: Colors.red,
-                title: 'Google Sign-In Failed',
-                message: 'Please try again later.',
+                title: errorTitle,
+                message: errorMessage,
                 buttonText: 'OK',
                 onButtonPressed: () {
                   if (context.mounted) {

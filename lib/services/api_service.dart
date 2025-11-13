@@ -14,14 +14,24 @@ class ApiService {
 
   Future<void> sendFCMToken(String token) async {
     print('Sending FCM token to API: $token');
-    final response = await _dio.post(
-      '/api/users/fcm_token/',
-      data: {'fcm_token': token},
-    );
-    if (response.statusCode == 200) {
-      print('FCM token sent successfully');
-    } else {
-      print('Failed to send FCM token');
+    try {
+      final response = await _dio.post(
+        '/api/users/fcm_token/',
+        data: {'fcm_token': token},
+      );
+      if (response.statusCode == 200) {
+        print('FCM token sent successfully');
+      } else {
+        print('Failed to send FCM token: Status ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      print('Dio error sending FCM token: \\${e.message}');
+      if (e.response != null) {
+        print('Response data: \\${e.response?.data}');
+        print('Status code: \\${e.response?.statusCode}');
+      }
+    } catch (e) {
+      print('Unexpected error sending FCM token: \\${e.toString()}');
     }
   }
 

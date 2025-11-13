@@ -59,6 +59,7 @@ class AuthService {
   }
 
   Future<bool> googleLogin(String idToken) async {
+    print('Google login initiated');
     try {
       final response = await _dio.post(
         '/api/users/google-login/',

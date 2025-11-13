@@ -4,7 +4,7 @@ import 'package:shuffle_native/pages/rental/my_rentals.dart';
 import 'package:shuffle_native/pages/rental/upload_item.dart';
 import 'package:shuffle_native/pages/notification.dart';
 import 'package:shuffle_native/pages/profile/profile.dart';
-import 'package:shuffle_native/services/web_socket_service.dart';
+// import 'package:shuffle_native/services/web_socket_service.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -69,7 +69,7 @@ class _MainScaffoldState extends State<MainScaffold> {
             setState(() {
               _selectedIndex = index;
               if (index == 3) {
-                WebSocketService.notificationCount.value = 0;
+                // WebSocketService.notificationCount.value = 0;
               }
             });
           },
@@ -90,30 +90,25 @@ class _MainScaffoldState extends State<MainScaffold> {
               label: 'Upload',
             ),
             BottomNavigationBarItem(
-              icon: ValueListenableBuilder<int>(
-                valueListenable: WebSocketService.notificationCount,
-                builder: (_, count, __) {
-                  return Stack(
-                    children: [
-                      const Icon(Icons.notifications),
-                      if (count > 0)
-                        Positioned(
-                          right: 0,
-                          child: CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.red,
-                            child: Text(
-                              '$count',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  );
-                },
+              icon: Stack(
+                children: [
+                  const Icon(Icons.notifications),
+                  // if (count > 0)
+                  //   Positioned(
+                  //     right: 0,
+                  //     child: CircleAvatar(
+                  //       radius: 8,
+                  //       backgroundColor: Colors.red,
+                  //       child: Text(
+                  //         '$count',
+                  //         style: const TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 10,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                ],
               ),
               label: 'Notifications',
             ),

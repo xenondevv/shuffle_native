@@ -6,6 +6,9 @@
         android:label="Shuffle"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB514gN_KCb8qzDCOkWYGNyun0Y2TmuCUA"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -34,8 +37,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value=""/>
         <receiver android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false"
